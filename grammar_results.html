@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados - ITEP Simulator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #004080;
+            color: white;
+            text-align: center;
+        }
+        .container {
+            margin-top: -50px;
+            background: #1f1d1d;
+            padding: 75px;
+            padding-bottom: 120px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+        }
+        h1 {
+            color: #ffffff;
+            font-size: 36px;
+        }
+        .score {
+            font-size: 24px;
+            margin: 20px 0;
+        }
+        .feedback {
+            margin: 20px 0;
+            font-style: italic;
+            font-size: 18px;
+        }
+        .answers {
+            text-align: left;
+            background: #333;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .answers p {
+            margin: 5px 0;
+        }
+        .correct { 
+            color: #00FF00; 
+        }
+        .incorrect { 
+            color: #FF3333; 
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+        button {
+            background: #008CBA;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #005f73;
+        }
+        .info-bar {
+            display: flex;
+            justify-content: space-between;
+            background: #003366;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .tittle {
+            font-size: 15px;
+            margin: 50px auto;
+            text-align: right;
+            background: #08039a;
+            padding: 30px;
+            padding-top: 20px;
+            margin-top: -10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 65%;
+        }
+        .tittle img {
+            width: 80px;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="tittle">
+        <img src="logo.png" alt="Logo">
+        <h1>Examen Results</h1>
+    </div>
+    <div class="container">
+        <p class="score"></p>
+        <div class="answers" id="resultsContainer"></div>
+        <div class="buttons">
+            <button onclick="window.location.href='listening_results.html'">Next </button>
+        </div>
+    </div>
+
+    <script>
+        function showResults() {
+            let userAnswers = JSON.parse(localStorage.getItem('userAnswers')) || {};
+            let correctAnswers = JSON.parse(localStorage.getItem('answers')) || [];
+            let questions = [
+"1. My brother ___ to school every day.",
+"2. If it rains, we ___ home.",
+"3. She suggested ___ to the movies.",
+"4. By the time I arrived, the meeting ___ over.",
+"5. Not only ___ late, but he also forgot his homework.",
+"6. I wish I ___ more time to travel.", 
+"7. No sooner ___ the meeting started than the fire alarm went off.", 
+"8. A: 'How long ___ your best friend?' B: 'Since we were kids.'", 
+"9. A: 'Why are you so tired?' B: 'I ___ all night.'", 
+"10. A: 'Did you enjoy the concert?' B: 'Yes, but I wish they ___ more songs from their first album.'", 
+"11. She don’t like coffee, but she loves tea instead.", 
+"12. He is wanting to buy a new car, but he doesn’t have enough money yet.", 
+"13. The book who I borrowed from the library is very interesting and informative.", 
+"14. When I was a child, I use to play outside every day until sunset.", 
+"15. The teacher told to us that the exam would be next week on Friday.", 
+"16. He drives more faster than his brother, but he is less careful when driving.", 
+"17. If I will have more time, I would learn another language.", 
+"18. Despite of being tired, she managed to complete her project on time.", 
+"19. Had I knew about the meeting, I would have come earlier.", 
+"20. The manager asked that everyone arrives on time for the meeting."
+
+            ];
+
+            let resultsContainer = document.getElementById("resultsContainer");
+            let correctCount = 0;
+            
+            questions.forEach((question, index) => {
+                let userAnswer = userAnswers[index] || "No respondida";
+                let correctAnswer = correctAnswers[index] || "N/A";
+                
+                let answerLine = document.createElement("p");
+                answerLine.innerHTML = `<strong>${question}</strong><br>
+                    Tu respuesta: <span class="${userAnswer === correctAnswer ? 'correct' : 'incorrect'}">${userAnswer}</span><br>
+                    Respuesta correcta: <span class="correct">${correctAnswer}</span>`;
+                
+                resultsContainer.appendChild(answerLine);
+                
+                if (userAnswer === correctAnswer) {
+                    correctCount++;
+                }
+            });
+
+            let scoreText = `Puntaje: ${correctCount} / ${questions.length}`;
+            document.querySelector(".score").innerText = scoreText;
+        }
+
+        window.onload = showResults;
+    </script>
+</body>
+</html>

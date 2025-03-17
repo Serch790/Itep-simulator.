@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados - Listening</title>
+    <style>
+          body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #004080;
+            color: white;
+            text-align: center;
+        }
+        .container {
+            margin-top: -50px;
+            background: #1f1d1d;
+            padding: 75px;
+            padding-bottom: 120px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+        }
+        h1 {
+            color: #ffffff;
+            font-size: 36px;
+        }
+        .score {
+            font-size: 24px;
+            margin: 20px 0;
+        }
+        .feedback {
+            margin: 20px 0;
+            font-style: italic;
+            font-size: 18px;
+        }
+        .answers {
+            text-align: left;
+            background: #333;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .answers p {
+            margin: 5px 0;
+        }
+        .correct { 
+            color: #00FF00; 
+        }
+        .incorrect { 
+            color: #FF3333; 
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+        button {
+            background: #008CBA;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #005f73;
+        }
+        .info-bar {
+            display: flex;
+            justify-content: space-between;
+            background: #003366;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .tittle {
+            font-size: 15px;
+            margin: 50px auto;
+            text-align: right;
+            background: #08039a;
+            padding: 30px;
+            padding-top: 20px;
+            margin-top: -10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 65%;
+        }
+        .tittle img {
+            width: 80px;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="tittle">
+        <img src="https://academy.upytech.mx/pluginfile.php/2414/course/overviewfiles/itep.png" alt="Descripción de la imagen">
+        <h1>Itep Simulator Results</h1>
+    </div>
+    <div class="container">
+        <h1>Results - Listening</h1>
+        
+        <div class="score" id="score"></div>
+        <div class="review" id="review"></div>
+        <button class="next-button" onclick="window.location.href='reading_results.html'">Next</button>
+    </div>
+
+    <script>
+        const userAnswers = JSON.parse(localStorage.getItem('userAnswers')) || {};
+        const sections = [
+            { questions: [
+                { text: "What does the man intend to do?", correctAnswer: "B) Rest a little while" },
+                { text: "What is the woman's relationship to the man?", correctAnswer: "D) She is his test taker" },
+                { text: "What will the woman probably do next?", correctAnswer: "B) Go next door" }
+            ]},
+            { questions: [
+                {  correctAnswer: "B)About transportation home" , correctAnswer: "B)About transportation home"  },
+                {  text: "How much does it cost to take the bus?",   correctAnswer: "C)5" }
+            ]},
+            { questions: [
+                {  text: "  What is the main topic? ", correctAnswer: "D) The value ando usefulness of EMDR treatment" },
+                { text: "According to the profesor, what does processing mean?", correctAnswer: "C) understanding an experience via a healthy stare of mind"  },
+                {  text: "According to the audio ...",     correctAnswer: "B) Traumatic experiences can haunt the memory and never leave a person's  mind"  },
+              
+            ]}
+        ];
+
+        let correctCount = 0;
+        let totalQuestions = 0;
+        let reviewHTML = "";
+
+        sections.forEach((section, secIndex) => {
+            section.questions.forEach((question, qIndex) => {
+                totalQuestions++;
+                const userAnswer = userAnswers[`section${secIndex}-q${qIndex}`] || "No answer";
+                const isCorrect = userAnswer === question.correctAnswer;
+
+                if (isCorrect) correctCount++;
+
+                reviewHTML += ` 
+                    <div class="question">
+                        <strong>${question.text}</strong><br>
+                        Your answer: <span class="${isCorrect ? 'correct' : 'incorrect'}">${userAnswer}</span><br>
+                        Correct answer: <span class="correct">${question.correctAnswer}</span>
+                    </div>
+                `;
+            });
+        });
+
+        document.getElementById("score").innerText = `Final Score: ${correctCount} / ${totalQuestions}`;
+        document.getElementById("review").innerHTML = reviewHTML;
+    </script>
+</body>
+</html>

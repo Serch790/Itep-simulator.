@@ -1,0 +1,328 @@
+<!DOCTYPE html>  
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador ITEP - Reading</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color:#1f1d1d;
+            color: white;
+            text-align: center;
+        }
+        .container {
+            margin-top: -50px;
+            background: #1f1d1d;
+            padding: 75px;
+            padding-bottom: 180px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        .tittle {
+            font-size: 15px;
+            margin: 50px auto;
+            text-align: right;
+            background: #08039a;
+            padding: 30px;
+            padding-top: 20px;
+            margin-top: -10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 65%;
+        }
+        .tittle img {
+            width: 80px;
+            height: auto;
+        }
+        h1 {
+            color: #ffffff;
+        }
+        .question-container {
+            display: flex;
+            align-items: center;
+            text-align: left;
+        }
+        .question-container img {
+            width: 50%;
+            height: 40%;
+            margin-right: 20px;
+            margin-bottom: 15px;
+        }
+        .passage-title {
+            font-size: 24px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            display: block;
+            margin-left: 800px;
+        }
+        .question {
+            padding: 5px;
+            border-radius: 5px;
+        }
+        #question-text {
+            font-size: 20px;
+            font-weight: bold;
+            color: #ffffff; 
+            margin-left: 180px;    
+            padding: 10px;
+            margin-top: -400px;
+        }
+        .options {
+            list-style-type: none;
+            padding: 0;
+            margin-left: 150px;
+        }
+        .options li {
+            margin: 10px 0;
+            padding: 10px;
+            background: #444;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+        }
+        .options li:hover, .selected {
+            background: #008CBA !important;
+        }
+        .footer {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+        button {
+            background: #008CBA;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #005f73;
+        }
+        .info-bar {
+            display: flex;
+            justify-content: space-between;
+            background: #003366;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="tittle">
+        <img src="https://academy.upytech.mx/pluginfile.php/2414/course/overviewfiles/itep.png" alt="Descripción de la imagen">
+        <h1>ITEP Simulator - Reading</h1>
+    </div>
+    <div class="container"> 
+        <div id="passage" class="question"></div>
+        <div class="question-container">
+            <img id="question-img" src="" alt="Pregunta">
+            <div class="question">
+                <h2 id="question-text"></h2>
+                <ul class="options"></ul>
+            </div>
+        </div>
+        <div class="info-bar">
+            <span>QUESTION 1/4</span>
+            <span id="timer">TIME LEFT: 01:18</span>
+        </div>
+        <div class="footer">
+            <button onclick="previousQuestion()" id="backButton" disabled>< Back</button>
+            <button onclick="nextQuestion()">Next ></button>
+        </div>
+    </div>
+
+    <script>
+let sections = [
+    {
+        text: "Passage 1",
+        image: "image1.png",
+        questions: [
+            { 
+                text: "What two places does the Golden Gate Bridge connect?", 
+                options: [
+                    "A) San Francisco and the Golden Gate National Recreation Area", 
+                    "B) San Francisco and Sacramento", 
+                    "C) San Francisco and the Marin Headlands.", 
+                    "D) San Francisco and Alcatraz Island"
+                ],
+                correctAnswer: "C) San Francisco and the Marin Headlands."
+            },
+            { 
+                text: "San Francisco is situated upon what kind of land mass?", 
+                options: [
+                    "A) A peninsula", 
+                    "B) An isthmus", 
+                    "C) An island", 
+                    "D) A valley"
+                ],
+                correctAnswer: "A) A peninsula"
+            },
+            { 
+                text: "What group of professionals named the bridge a Wonder of the Modern World?", 
+                options: [
+                    "A) Politicians", 
+                    "B) Architects", 
+                    "C) Engineers", 
+                    "D) Ecologists"
+                ],
+                correctAnswer: "C) Engineers"
+            },
+            { 
+                text: "Where is the best place for visitors to enjoy views of the bridge?", 
+                options: [
+                    "A) Downtown San Francisco", 
+                    "B) Alcatraz Island", 
+                    "C) Golden Gate National Recreation Area", 
+                    "D) A boat tour through San Francisco Bay"
+                ],
+                correctAnswer: "C) Golden Gate National Recreation Area"
+            }
+        ]
+    },
+    {
+        text: "Passage 2",
+        image: "image2.png",
+        questions: [
+            { 
+                text: "Why couldn't Americans consume alcohol before 1919?", 
+                options: [
+                    "A) Because it was too expensive", 
+                    "B) Because it was illegal", 
+                    "C) Because people didn't want to drink it", 
+                    "D) Because it was considered unhealthy"
+                ],
+                correctAnswer: "B) Because it was illegal"
+            },
+            { 
+                text: "Which group controlled the distribution of illegal alcohol during Prohibition?", 
+                options: [
+                    "A) Politicians", 
+                    "B) The Mafia", 
+                    "C) The police", 
+                    "D) Brewery owners"
+                ],
+                correctAnswer: "B) The Mafia"
+            },
+            { 
+                text: "What did Al Capone do to avoid arrest for a long time?", 
+                options: [
+                    "A) He bribed police officers and politicians", 
+                    "B) He hid in another city", 
+                    "C) He paid large sums of money to go free", 
+                    "D) He joined a group of police officers"
+                ],
+                correctAnswer: "A) He bribed police officers and politicians"
+            },
+            { 
+                text: "Why was Al Capone eventually sent to prison?", 
+                options: [
+                    "A) For murder", 
+                    "B) For selling alcohol illegally", 
+                    "C) For not paying taxes", 
+                    "D) For bribing public officials"
+                ],
+                correctAnswer: "C) For not paying taxes"
+            }
+        ]
+    }
+];
+
+        let currentSection = 0;
+        let currentQuestion = 0;
+        let timeLeft = 1200; // 5 minutos en segundos
+        let timer;
+
+        function startTimer() {
+            timer = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    showResults();
+                } else {
+                    timeLeft--;
+                    updateTimerDisplay();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            let minutes = Math.floor(timeLeft / 60);
+            let seconds = timeLeft % 60;
+            document.getElementById("timer").innerText = `Time: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        }
+
+        function loadQuestion() {
+            if (currentSection >= sections.length) {
+                showResults();
+                return;
+            }
+
+            let section = sections[currentSection];
+            let questionData = section.questions[currentQuestion];
+
+            document.getElementById("passage").innerHTML = `<span class="passage-title">${section.text}</span>`;
+            document.getElementById("question-text").innerText = questionData.text;
+            document.getElementById("question-img").src = section.image;
+
+            let optionsList = document.querySelector(".options");
+            optionsList.innerHTML = "";
+
+            questionData.options.forEach(option => {
+                let li = document.createElement("li");
+                li.innerText = option;
+                li.onclick = () => selectOption(li);
+                optionsList.appendChild(li);
+            });
+
+            document.querySelector(".info-bar span").innerText = `QUESTION ${currentQuestion + 1}/${sections[currentSection].questions.length}`;
+            updateTimerDisplay();
+
+            document.getElementById("backButton").disabled = (currentSection === 0 && currentQuestion === 0);
+        }
+
+        function selectOption(selectedLi) {
+            document.querySelectorAll(".options li").forEach(li => li.classList.remove("selected"));
+            selectedLi.classList.add("selected");
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < sections[currentSection].questions.length - 1) {
+                currentQuestion++;
+            } else if (currentSection < sections.length - 1) {
+                currentSection++;
+                currentQuestion = 0;
+            } else {
+                showResults();
+                return;
+            }
+            loadQuestion();
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+            } else if (currentSection > 0) {
+                currentSection--;
+                currentQuestion = sections[currentSection].questions.length - 1;
+            }
+            loadQuestion();
+        }
+
+        function showResults() {
+            // Redirige a la página de Writing después de la última pregunta
+            window.location.href = 'writting.html';
+        }
+
+        window.onload = function() {
+            loadQuestion();
+            startTimer();
+        };
+    </script>
+</body>
+</html>
